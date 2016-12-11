@@ -17,13 +17,13 @@ package bgu.spl.a2;
 public class Deferred<T> {
     T obj;
     boolean resolved;
+    boolean calledBack;
 
    public Deferred (T input)
     {
     obj=input;
     resolved=false;
-
-
+    calledBack=false;
     }
 
     /**
@@ -36,9 +36,7 @@ public class Deferred<T> {
     public T get() {
         if (resolved)
             return (obj);
-        else throw new UnsupportedOperationException("Not resolved yet.");
-
-
+        else throw new IllegalStateException("Not resolved yet.");
     }
 
     /**
@@ -64,7 +62,7 @@ public class Deferred<T> {
      */
     public void resolve(T value) {
         if (resolved)
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        throw new IllegalStateException("Already resolved");
         else {
             resolved=true;
         }
@@ -84,8 +82,18 @@ public class Deferred<T> {
      * resolved
      */
     public void whenResolved(Runnable callback) {
+    if (calledBack)
+              throw new IllegalStateException("Impossible to run callback twice!");
+    else if (isResolved())
+    {
+                calledBack=true;
+                callback.run();;
+            }
+
+
+
+
         //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
 }
