@@ -8,6 +8,8 @@ import static org.junit.Assert.*;
  * Created by user on 10/12/2016.
  */
 public class VersionMonitorTest {
+	
+	
     @Test
     public void getVersion() throws Exception {
 
