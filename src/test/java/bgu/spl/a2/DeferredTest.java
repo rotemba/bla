@@ -18,6 +18,7 @@ public class DeferredTest {
     private class RunTester implements Runnable{
 
         RunTester(){
+            //empty constructor
         }
 
 
