@@ -2,16 +2,11 @@ package bgu.spl.a2;
 
 //Welcome 
 
-import com.sun.scenario.effect.DelegateEffect;
-import jdk.internal.dynalink.linker.LinkerServices;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Ignore;
-import org.junit.runners.model.InitializationError;
 
 
-import javax.management.RuntimeErrorException;
 
 import static org.junit.Assert.*;
 
