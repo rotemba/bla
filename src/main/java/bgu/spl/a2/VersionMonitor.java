@@ -17,19 +17,32 @@ package bgu.spl.a2;
  * methods
  */
 public class VersionMonitor {
+	int version;
+	public VersionMonitor(int version){
+		this.version = version;
+	}
 
-    public int getVersion() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
-    }
+	public synchronized int getVersion() {
+		return version;
+		//        //TODO: replace method body with real implementation
+		//        throw new UnsupportedOperationException("Not Implemented Yet.");
+	}
 
-    public void inc() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
-    }
+	public void inc() {
+		synchronized (this) {
+			version++;
+		}
+		//        //TODO: replace method body with real implementation
+		//        throw new UnsupportedOperationException("Not Implemented Yet.");
+	}
 
-    public void await(int version) throws InterruptedException {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
-    }
+	public void await(int version) throws InterruptedException {
+		if(version==this.version){
+			System.out.println("wait");
+		}
+		else
+			System.out.println("Dont wait");
+		//        //TODO: replace method body with real implementation
+		//        throw new UnsupportedOperationException("Not Implemented Yet.");
+	}
 }
