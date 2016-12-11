@@ -1,6 +1,9 @@
 package bgu.spl.a2;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
 
 import static org.junit.Assert.*;
 
@@ -8,7 +11,7 @@ import static org.junit.Assert.*;
  * Created by user on 10/12/2016.
  */
 public class DeferredTest {
-    private Deferred<T> check();
+
     /*
         Create an instance of the class.
         The class must have a public default constructor.
@@ -20,18 +23,41 @@ public class DeferredTest {
 
      */
 
-    @Test
+    @Test  (excpected = UnsupportedOperationException.class)
     public void get() throws Exception {
+        int x = 7;
+        Deferred<Integer> deffered= new Deferred<Integer>(x);
 
-    }
+                int y = deffered.get();
+                assertEquals(x,y);
+
+        }
 
     @Test
+    @Before
     public void isResolved() throws Exception {
+        int x = 7;
+        boolean excpected=false;
+        Deferred<Integer> deffered= new Deferred<Integer>(x);
+
+                boolean checkIfFinieshed=deffered.isResolved();
+                assertEquals(excpected,checkIfFinieshed);
+
+
 
     }
 
     @Test
+    @After
     public void resolve() throws Exception {
+        int x = 7;
+        Deferred<Integer> deffered= new Deferred<Integer>(x);
+
+        deffered.resolve(8);
+        boolean checkIfFinished=deffered.isResolved();
+
+            boolean b=true;
+            assertEquals(b,checkIfFinished);
 
     }
 

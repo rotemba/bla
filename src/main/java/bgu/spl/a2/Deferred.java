@@ -15,6 +15,16 @@ package bgu.spl.a2;
  * @param <T> the result type
  */
 public class Deferred<T> {
+    T obj;
+    boolean resolved;
+
+   public Deferred (T input)
+    {
+    obj=input;
+    resolved=false;
+
+
+    }
 
     /**
      *
@@ -24,8 +34,11 @@ public class Deferred<T> {
      * this object is not yet resolved
      */
     public T get() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        if (resolved)
+            return (obj);
+        else throw new UnsupportedOperationException("Not resolved yet.");
+
+
     }
 
     /**
@@ -34,8 +47,7 @@ public class Deferred<T> {
      * {@link #resolve(java.lang.Object)} has been called on this object before.
      */
     public boolean isResolved() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        return (resolved);
     }
 
     /**
@@ -51,8 +63,11 @@ public class Deferred<T> {
      * resolved
      */
     public void resolve(T value) {
-        //TODO: replace method body with real implementation
+        if (resolved)
         throw new UnsupportedOperationException("Not Implemented Yet.");
+        else {
+            resolved=true;
+        }
     }
 
     /**
