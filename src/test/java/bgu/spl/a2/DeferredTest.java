@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
  * Created by user on 10/12/2016.
  */
 public class DeferredTest {
+   Deferred<Integer> deffered;
     public String runModify="";
     private class RunTester implements Runnable{
 
@@ -24,7 +25,6 @@ public class DeferredTest {
 
         public void run(){
             runModify="running";
-            //throw new UnsupportedOperationException("Not running anything");
         }
     }
     /*
@@ -46,18 +46,20 @@ public class DeferredTest {
 }
      */
 
+    @Before
+    public void setUp(){
+        int x = 7;
+        deffered= new Deferred<Integer>(x);
+    }
+
     @Test(expected = IllegalStateException.class)
     public void get() throws Exception {
-        int x = 7;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
-
-                int y = deffered.get();
+                  int y = deffered.get();
         }
 
     @Test
     public void getAfterResolved() throws Exception {
-        int x = 7;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
+        int x=7;
         deffered.resolve(7);
         int y = deffered.get();
         assertEquals(x,y);
@@ -65,18 +67,14 @@ public class DeferredTest {
 
     @Test
     public void isNotResolved() throws Exception {
-        int x = 7;
         boolean excpected=false;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
 
                 boolean checkIfFinieshed=deffered.isResolved();
                 assertFalse(checkIfFinieshed);
     }
     @Test
     public void isResolved() throws Exception {
-        int x = 7;
         boolean excpected=true;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
         deffered.resolve(7);
         boolean checkIfFinieshed=deffered.isResolved();
         assertTrue(checkIfFinieshed);
@@ -84,24 +82,18 @@ public class DeferredTest {
 
     @Test
     public void resolve() throws Exception {
-        int x = 7;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
         deffered.resolve(8);
         boolean checkIfFinished=deffered.isResolved();
         assertTrue(checkIfFinished);
     }
     @Test (expected = IllegalStateException.class )
     public void resolveTwice() throws Exception {
-        int x = 7;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
         deffered.resolve(8);
         deffered.resolve(8);
     }
 
     @Test
     public void whenResolved() throws Exception {
-        int x = 7;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
         RunTester toRun= new RunTester();
         deffered.resolve(7);
         deffered.whenResolved(toRun);
@@ -113,8 +105,6 @@ public class DeferredTest {
 
     @Test (expected = IllegalStateException.class)
     public void whenResolvedTwice() throws Exception {
-        int x = 7;
-        Deferred<Integer> deffered= new Deferred<Integer>(x);
         RunTester toRun= new RunTester();
         deffered.resolve(7);
         deffered.whenResolved(toRun);

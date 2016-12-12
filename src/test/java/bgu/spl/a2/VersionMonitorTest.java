@@ -12,7 +12,7 @@ public class VersionMonitorTest {
 	@Test
 	public void getVersion() throws Exception {
 		int i = verMon.getVersion();
-		assertEquals(1,i);
+		assertEquals(0,i);
 	
 		verMon.inc();;
 		i = verMon.getVersion();
