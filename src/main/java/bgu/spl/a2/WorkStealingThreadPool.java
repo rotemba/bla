@@ -1,5 +1,7 @@
 package bgu.spl.a2;
 
+import java.util.concurrent.LinkedBlockingDeque;
+
 /**
  * represents a work stealing thread pool - to understand what this class does
  * please refer to your assignment.
@@ -11,7 +13,8 @@ package bgu.spl.a2;
  * methods
  */
 public class WorkStealingThreadPool {
-
+private LinkedBlockingDeque<Task>[] queues;
+private int numberOfThreads;
     /**
      * creates a {@link WorkStealingThreadPool} which has nthreads
      * {@link Processor}s. Note, threads should not get started until calling to
@@ -25,8 +28,23 @@ public class WorkStealingThreadPool {
      * thread pool
      */
     public WorkStealingThreadPool(int nthreads) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        numberOfThreads=nthreads;
+        queues= new LinkedBlockingDeque<Task>[numberOfThreads];
+        int[] x= new int[5];
+    }
+
+    private boolean stealTasksFromOther (int stealer){
+        int next=(i+1)%numberOfThreads;
+        int victim=chooseVictim(stealer,next);
+    }
+
+    private int chooseVictim (int stealer,int toCheck){
+        if (toCheck==stealer)
+            return (-1);
+        if (queues[toCheck].size()>1)
+            return toCheck;
+        int next=(toCheck+1)%numberOfThreads;
+        return chooseVictim(stealer,next);
     }
 
     /**
