@@ -1,6 +1,7 @@
 package bgu.spl.a2;
 
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * represents a work stealing thread pool - to understand what this class does
@@ -15,6 +16,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class WorkStealingThreadPool {
 private LinkedBlockingDeque<Task>[] queues;
 private int numberOfThreads;
+private ScheduledThreadPoolExecutor poolExecutor;
     /**
      * creates a {@link WorkStealingThreadPool} which has nthreads
      * {@link Processor}s. Note, threads should not get started until calling to
@@ -29,23 +31,13 @@ private int numberOfThreads;
      */
     public WorkStealingThreadPool(int nthreads) {
         numberOfThreads=nthreads;
-        queues= new LinkedBlockingDeque<Task>[numberOfThreads];
-        int[] x= new int[5];
+        queues= new LinkedBlockingDeque[numberOfThreads];
+        poolExecutor= new ScheduledThreadPoolExecutor(numberOfThreads);
+
+
+
     }
 
-    private boolean stealTasksFromOther (int stealer){
-        int next=(i+1)%numberOfThreads;
-        int victim=chooseVictim(stealer,next);
-    }
-
-    private int chooseVictim (int stealer,int toCheck){
-        if (toCheck==stealer)
-            return (-1);
-        if (queues[toCheck].size()>1)
-            return toCheck;
-        int next=(toCheck+1)%numberOfThreads;
-        return chooseVictim(stealer,next);
-    }
 
     /**
      * submits a task to be executed by a processor belongs to this thread pool
@@ -70,8 +62,8 @@ private int numberOfThreads;
      * shutdown the queue is itself a processor of this queue
      */
     public void shutdown() throws InterruptedException {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        poolExecutor.shutdown();
+        //throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
     /**
@@ -81,5 +73,34 @@ private int numberOfThreads;
         //TODO: replace method body with real implementation
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
+
+    //make a stealing action for thread stealer
+    //reutrn true if done successfully, false if failed.
+    private boolean stealTasksFromOther (int stealer){
+        int next=(stealer+1)%numberOfThreads;
+        int victim=chooseVictim(stealer,next);
+        if (victim==-1)
+            return (false);
+        else{
+            steal(stealer,victim);
+            return true;
+        }
+    }
+    //find a Thread which got more then 1 task in the turn
+    //return -1 if not found.
+    private int chooseVictim (int stealer,int toCheck){
+        if (toCheck==stealer)
+            return (-1);
+        if (queues[toCheck].size()>1)
+            return toCheck;
+        int next=(toCheck+1)%numberOfThreads;
+        return chooseVictim(stealer,next);
+    }
+    //steals half of the task from Victim to Stealer, allready checked he got 'free' tasks.
+    private void steal (int stealer, int victim){
+        //TODO: replace method body with real implementation
+
+    }
+
 
 }
