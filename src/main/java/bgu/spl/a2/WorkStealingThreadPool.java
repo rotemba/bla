@@ -1,5 +1,6 @@
 package bgu.spl.a2;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -16,7 +17,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class WorkStealingThreadPool {
 private LinkedBlockingDeque<Task>[] queues;
 private int numberOfThreads;
-private ScheduledThreadPoolExecutor poolExecutor;
+private Processor[] processors;
+private Thread[] threads;
     /**
      * creates a {@link WorkStealingThreadPool} which has nthreads
      * {@link Processor}s. Note, threads should not get started until calling to
@@ -32,8 +34,12 @@ private ScheduledThreadPoolExecutor poolExecutor;
     public WorkStealingThreadPool(int nthreads) {
         numberOfThreads=nthreads;
         queues= new LinkedBlockingDeque[numberOfThreads];
-        poolExecutor= new ScheduledThreadPoolExecutor(numberOfThreads);
-
+        threads = new Thread[numberOfThreads];
+        processors = new Processor[numberOfThreads];
+        for (int i=0;i<numberOfThreads; i++){
+            Processor p = new Processor(i,this);
+            threads[i]=new Thread(p);
+        }
 
 
     }
@@ -45,8 +51,8 @@ private ScheduledThreadPoolExecutor poolExecutor;
      * @param task the task to execute
      */
     public void submit(Task<?> task) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        task.handle(processors[0]);
+
     }
 
     /**
@@ -62,16 +68,20 @@ private ScheduledThreadPoolExecutor poolExecutor;
      * shutdown the queue is itself a processor of this queue
      */
     public void shutdown() throws InterruptedException {
-        poolExecutor.shutdown();
-        //throw new UnsupportedOperationException("Not Implemented Yet.");
+        for (int i=0;i<numberOfThreads;i++){
+            threads[i].sleep(1000);
+
+        }
     }
 
     /**
      * start the threads belongs to this thread pool
      */
     public void start() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        System.out.println("Start running the Thread_Pool...");
+        for (int i = 0; i < numberOfThreads; i++) {
+            threads[i].start();
+        }
     }
 
     //make a stealing action for thread stealer

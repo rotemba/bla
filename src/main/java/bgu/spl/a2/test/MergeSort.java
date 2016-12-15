@@ -20,9 +20,15 @@ public class MergeSort extends Task<int[]> {
     }
 
     @Override
+    //We have P - the Handler processor, just need to run the task on it.
     protected void start() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        boolean needToSpawn=checkIfNeedToSplitTask();
+        if (needToSpawn)
+            spawn();
+        else{
+            //need to Actually solve the task.
+        }
+
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -50,6 +56,13 @@ public class MergeSort extends Task<int[]> {
 
 
     }
+    private boolean checkIfNeedToSplitTask(){
+        //TODO: need to check for a specific task if it can be done or got to split up.
+        return true;
+    }
 
+    @Override
+    protected void splitTask() {
 
+    }
 }

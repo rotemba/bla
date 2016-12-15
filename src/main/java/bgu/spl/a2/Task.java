@@ -14,6 +14,7 @@ import java.util.Collection;
  * @param <R> the task result type
  */
 public abstract class Task<R> {
+    private Processor p;
 
     /**
      * start handling the task - note that this method is protected, a handler
@@ -38,8 +39,11 @@ public abstract class Task<R> {
      * @param handler the handler that wants to handle the task
      */
     /*package*/ final void handle(Processor handler) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        //handler is the processor that supposed to do this task.
+        //start function MUST be implemented in the classes that extends task.
+        p=handler;
+        start();
+
     }
 
     /**
@@ -49,9 +53,12 @@ public abstract class Task<R> {
      * @param task the task to execute
      */
     protected final void spawn(Task<?>... task) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        splitTask();
     }
+
+    protected abstract void splitTask();
+
+
 
     /**
      * add a callback to be executed once *all* the given tasks results are
